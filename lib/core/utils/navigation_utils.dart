@@ -11,6 +11,7 @@ class NavigationUtils {
   /// Navigates to a route using [context.go] and updates the persistent history.
   /// Typically used for top-level navigation where the stack is reset.
   static void go(BuildContext context, String route) {
+    if (_isCurrentRoute(context, route)) return;
     _updateHistory(route, isReset: true);
     context.go(route);
   }
@@ -18,19 +19,35 @@ class NavigationUtils {
   /// Clears all persistent navigation history and navigates to a new route.
   /// Typically used after login to prevent users from going back to the login page.
   static void clearHistoryAndGo(BuildContext context, String route) {
+    if (_isCurrentRoute(context, route)) {
+      clearHistory();
+      return;
+    }
     go(context, route);
   }
 
   /// Navigates to a route using [context.push] and appends to the persistent history.
   static void push(BuildContext context, String route) {
+    if (_isCurrentRoute(context, route)) return;
     _updateHistory(route);
     context.push(route);
   }
 
   /// Navigates to a route using [context.pushReplacement] and updates the persistent history.
   static void replace(BuildContext context, String route) {
+    if (_isCurrentRoute(context, route)) return;
     _updateHistory(route, isReplace: true);
     context.pushReplacement(route);
+  }
+
+  /// Checks if the provided route is the current location.
+  static bool _isCurrentRoute(BuildContext context, String route) {
+    try {
+      final String currentLoc = GoRouterState.of(context).uri.toString();
+      return currentLoc == route;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Attempts to pop the current route.
