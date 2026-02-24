@@ -115,7 +115,7 @@ class DashBoardPage extends ConsumerWidget {
                           child: _buildCustomTab(
                             label: 'Sample',
                             isActive: activeTabIndex == 0,
-                            onTap: () => NavigationUtils.push(context,AppRoutes.groceriesHome),
+                            onTap: () => NavigationUtils.go(context,AppRoutes.groceriesHome),
                             primaryColor: primaryTeal,
                           ),
                         ),
@@ -124,7 +124,7 @@ class DashBoardPage extends ConsumerWidget {
                           child: _buildCustomTab(
                             label: 'Assistance',
                             isActive: activeTabIndex == 1,
-                            onTap: () => NavigationUtils.push(context,AppRoutes.assistantHome),
+                            onTap: () => NavigationUtils.go(context,AppRoutes.assistantHome),
                             primaryColor: primaryTeal,
                           ),
                         ),
