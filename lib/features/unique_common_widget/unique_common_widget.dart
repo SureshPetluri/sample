@@ -330,7 +330,7 @@ class _VideoContentState extends State<_VideoContent> {
         key: Key(widget.url),
         onVisibilityChanged: _handleVisibilityChanged,
         child: AspectRatio(
-          aspectRatio: _chewieController!.videoPlayerController.value.aspectRatio,
+          aspectRatio: _chewieController?.videoPlayerController.value.aspectRatio ?? 1.0,
           child: Chewie(controller: _chewieController!),
         ),
       );

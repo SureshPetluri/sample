@@ -173,27 +173,33 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
                     const Text("Sample"),
                     const SizedBox(width: 12),
                   ],
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: isWeb(context) ? 400 : double.infinity,
-                      ),
-                      child: AppTextField(
-                        hintText: "Enter your name",
-                        controller: nameController,
-                        prefixIcon: const Icon(Icons.search),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Name cannot be empty";
-                          }
-                          return null;
-                        },
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: isWeb(context) ? 400 : double.infinity,
+                        ),
+                        child: AppTextField(
+                          hintText:GoRouterState.of(context).uri.toString() == AppRoutes.services ?"Search Services": "Enter your name",
+                          controller: nameController,
+                          prefixIcon: const Icon(Icons.search),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Name cannot be empty";
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  if (isWeb(context)) ...[
+
+                  if (isWeb(context) && activeTabIndex == 0) ...[
                     const SizedBox(width: 12),
                     const Text("Categories"),
+                    const SizedBox(width: 12),
+                    const Icon(Icons.shopping_cart),
+                  ] else if (isWeb(context)) ...[
+                    const SizedBox(width: 12),
+                    const Text("Services"),
                     const SizedBox(width: 12),
                     const Icon(Icons.shopping_cart),
                   ],
@@ -203,13 +209,15 @@ class _DashBoardPageState extends ConsumerState<DashBoardPage> {
 
             /// 🔹 Actual Page Content
             SliverFillRemaining(
-              hasScrollBody: false,
+              hasScrollBody: location.startsWith(AppRoutes.services),
               child: widget.child,
             ),
           ],
         ),
       ),
-      bottomNavigationBar: activeTabIndex == 0
+      bottomNavigationBar: isWeb(context)
+          ? null
+          : activeTabIndex == 0
           ? BottomNavigationBar(
               currentIndex: _calculateGroceriesIndex(location),
               onTap: (index) {
