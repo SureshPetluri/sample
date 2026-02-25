@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../../../../../core/widgets/product_widget.dart';
 import '../../../../unique_common_widget/unique_common_data.dart';
 import '../../../../unique_common_widget/unique_common_type.dart';
 import '../../../../unique_common_widget/unique_common_widget.dart';
@@ -64,40 +65,36 @@ class _GroceriesHomePageState extends ConsumerState<GroceriesHomePage> {
   Widget build(BuildContext context) {
     ref.watch(homeProvider); // Keep the provider watch if needed for state
 
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 50,
-              child: UniqueCommonWidget(
-                data: _banners[0],
-              ),
-            ),
-            _buildCarouselBanners(),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 24, 16, 8),
-              child: Text(
-                'Exclusive Offers for You',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-            ..._stepWiseOffers.map((offer) => _buildStepWiseOffer(offer)),
-            // const Padding(
-            //   padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
-            //   child: Text(
-            //     'Featured Promotions',
-            //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //   ),
-            // ),
-            //
-            const SizedBox(height: 32),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 50,
+          child: UniqueCommonWidget(
+            data: _banners[0],
+          ),
         ),
-      ),
+        _buildCarouselBanners(),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 8),
+          child: Text(
+            'Exclusive Offers for You',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+        ),
+        ..._stepWiseOffers.map((offer) => _buildStepWiseOffer(offer)),
+        // const Padding(
+        //   padding: EdgeInsets.fromLTRB(16, 32, 16, 8),
+        //   child: Text(
+        //     'Featured Promotions',
+        //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        //   ),
+        // ),
+        //
+        const SizedBox(height: 32),
+      ],
     );
+
   }
 
   Widget _buildCarouselBanners() {
@@ -202,7 +199,7 @@ class _GroceriesHomePageState extends ConsumerState<GroceriesHomePage> {
             itemCount: offer['products'].length,
             itemBuilder: (context, index) {
               final product = offer['products'][index];
-              return _buildProductCard(product);
+              return buildProductCard(product);
             },
           ),
         ),
@@ -210,90 +207,4 @@ class _GroceriesHomePageState extends ConsumerState<GroceriesHomePage> {
     );
   }
 
-  Widget _buildProductCard(Map<String, dynamic> product) {
-    return Container(
-      width: 160,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-              ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                child: Image.network(
-                  product['image'],
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator(strokeWidth: 2));
-                  },
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Center(child: Icon(Icons.shopping_basket, size: 40, color: Colors.grey)),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      product['price'],
-                      style: TextStyle(
-                        color: Colors.green.shade700,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade600,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(8),
-                        child: const Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Icon(Icons.add, color: Colors.white, size: 20),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

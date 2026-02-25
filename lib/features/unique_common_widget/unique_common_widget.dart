@@ -324,18 +324,19 @@ class _VideoContentState extends State<_VideoContent> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content;
-    if (_chewieController != null && _chewieController!.videoPlayerController.value.isInitialized) {
-      content = Chewie(controller: _chewieController!);
+    if (_chewieController != null &&
+        _chewieController!.videoPlayerController.value.isInitialized) {
+      return VisibilityDetector(
+        key: Key(widget.url),
+        onVisibilityChanged: _handleVisibilityChanged,
+        child: AspectRatio(
+          aspectRatio: _chewieController!.videoPlayerController.value.aspectRatio,
+          child: Chewie(controller: _chewieController!),
+        ),
+      );
     } else {
-      content = const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
-
-    return VisibilityDetector(
-      key: Key(widget.url),
-      onVisibilityChanged: _handleVisibilityChanged,
-      child: content,
-    );
   }
 }
 

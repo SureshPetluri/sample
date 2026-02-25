@@ -17,65 +17,7 @@ class AssistantDashBoardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (isWeb(context)) ...[Text("Sample"), SizedBox(width: 12)],
-            Flexible(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: !isWeb(context) ? double.infinity : 400,
-                ),
-                child: AppTextField(
-                  hintText: "Enter your name",
-                  controller: nameController,
-                  prefixIcon: Icon(Icons.search),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Name cannot be empty";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            if (isWeb(context)) ...[
-              SizedBox(width: 12),
-              Text("Categories"),
-              SizedBox(width: 12),
-            ],
-            if (isWeb(context)) ...[
-              Icon(Icons.shopping_cart),
-              SizedBox(width: 12),
-            ],
-          ],
-        ),
-      ),
-      body: Center(child: child),
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _calculateIndex(context),
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              NavigationUtils.push(context,AppRoutes.assistantHome);
-              break;
-            case 1:
-              NavigationUtils.push(context,AppRoutes.services);
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cleaning_services),
-            label: 'Services',
-          ),
-        ],
-      ),
-    );
+    return child;
   }
 
   int _calculateIndex(BuildContext context) {

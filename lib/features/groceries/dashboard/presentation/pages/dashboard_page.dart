@@ -19,64 +19,7 @@ class GroceriesDashBoardPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (isWeb(context)) Text("Sample"),
-            Flexible(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: isWeb(context) ? 400 : double.infinity,
-                ),
-                child: AppTextField(
-                  hintText: "Enter your name",
-                  controller: nameController,
-                  prefixIcon: Icon(Icons.search),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Name cannot be empty";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            if (isWeb(context)) Text("Categories"),
-            if (isWeb(context)) Icon(Icons.shopping_cart),
-          ],
-        ),
-      ),
-      body: Center(child: child),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _calculateIndex(context),
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              NavigationUtils.push(context, AppRoutes.groceriesHome);
-              break;
-            case 1:
-              NavigationUtils.push(context, AppRoutes.brands);
-              break;
-            case 2:
-              NavigationUtils.push(context, AppRoutes.categories);
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.branding_watermark),
-            label: 'Brands',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: 'Categories',
-          ),
-        ],
-      ),
-    );
+    return child;
   }
 
   int _calculateIndex(BuildContext context) {
